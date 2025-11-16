@@ -6,7 +6,17 @@ function dayName(dt, timezoneOffset) {
 }
 
 export default function ForecastList({ daily = [] }) {
-  const formatTemp = (t) => (typeof t === 'number' ? `${Math.round(t)}°` : '—')
+  const formatTemp = (t) => {
+    // support number, numeric string, or object like { min: 1, max: 4 }
+    if (t && typeof t === 'object') {
+      // pick max if available, else day, else min
+      const v = typeof t.max === 'number' ? t.max : typeof t.day === 'number' ? t.day : t.min
+      const n = Number(v)
+      return Number.isFinite(n) ? `${Math.round(n)}°` : '—'
+    }
+    const n = Number(t)
+    return Number.isFinite(n) ? `${Math.round(n)}°` : '—'
+  }
   const safeWeather = (d) => (d && Array.isArray(d.weather) && d.weather[0] ? d.weather[0] : { icon: null, description: '' })
 
   return (

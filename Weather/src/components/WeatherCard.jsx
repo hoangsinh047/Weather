@@ -13,8 +13,14 @@ export default function WeatherCard({ data = {}, cityName = '' }) {
   const icon = data.weather && data.weather[0] ? data.weather[0].icon : null
   const desc = data.weather && data.weather[0] ? data.weather[0].description : ''
 
-  // Safe formatters to avoid NaN when values are missing
-  const formatTemp = (t) => (typeof t === 'number' ? `${Math.round(t)}°C` : '—')
+  // Safe formatters to avoid NaN when values are missing or in unexpected shape
+  const formatTemp = (t) => {
+    // support number, numeric string, or object like { day: 12 }
+    let v = t
+    if (v && typeof v === 'object' && typeof v.day === 'number') v = v.day
+    const n = Number(v)
+    return Number.isFinite(n) ? `${Math.round(n)}°C` : '—'
+  }
   const formatPercent = (v) => (typeof v === 'number' ? `${v}%` : '—')
   const formatWind = (w) => (typeof w === 'number' ? `${w} m/s` : '—')
 
