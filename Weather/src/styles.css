@@ -72,10 +72,60 @@ body{
 
 .footer{margin-top:28px;text-align:center;color:var(--muted);font-size:12px}
 
-@media (max-width:720px){
-  .header{flex-direction:column;align-items:flex-start}
-  .weather-card{flex-direction:column;align-items:flex-start;gap:12px}
-  .wc-temp{font-size:36px}
-  .forecast-list{gap:8px}
+@media (min-width:900px){
+  /* Desktop / large tablets: make a two-column card with a fixed-right column for icon and sun times */
+  .container{max-width:1100px;padding:40px}
+  .header h1{font-size:34px}
+  .weather-card{display:grid;grid-template-columns:1fr 260px;align-items:center;gap:18px}
+  .wc-left{align-items:flex-start}
+  .wc-temp{font-size:64px}
+  .wc-meta{font-size:14px}
+
+  /* Show forecast items in a wrap/grid layout on wider screens */
+  .forecast-list{display:flex;flex-wrap:wrap;gap:12px;overflow:visible}
+  .forecast-item{flex:0 0 130px;min-width:130px}
 }
 
+/* Slightly larger touch targets and stacked search on small screens */
+@media (max-width:720px){
+  .container{padding:20px}
+  .hero{padding:28px 16px}
+  .search-bar{flex-direction:column;align-items:stretch}
+  .search-input{padding:14px;font-size:16px;border-radius:12px}
+  .search-btn{width:100%;padding:12px 16px;border-radius:12px}
+  .header h1{font-size:22px}
+  .wc-temp{font-size:36px}
+  .wc-meta{flex-direction:column;gap:6px}
+  .forecast-list{padding-bottom:12px}
+}
+
+/* Extra polish: smooth scrolling on iOS, hidden scrollbar but still scrollable */
+.forecast-list{
+  -webkit-overflow-scrolling: touch;
+}
+.forecast-list::-webkit-scrollbar{height:8px}
+.forecast-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:8px}
+
+/* Focus accessibility */
+.search-input:focus-visible, .search-btn:focus-visible, .forecast-item:focus-visible, .wc-right img:focus-visible{
+  outline:3px solid rgba(96,165,250,0.12);
+  outline-offset:3px;
+}
+
+/* Utility: center content on very large screens */
+@media (min-width:1400px){
+  .container{max-width:1200px;padding:48px}
+  .wc-temp{font-size:72px}
+}
+
+/* Make images responsive */
+.wc-icon, .forecast-item img{max-width:100%;height:auto}
+
+/* Ensure long city names wrap nicely */
+.wc-city{word-break:break-word}
+
+/* Slightly reduce visual noise for small screens */
+@media (max-width:420px){
+  .wc-temp{font-size:32px}
+  .wc-desc{font-size:13px}
+}
